@@ -1,0 +1,95 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Reservation {
+    private String name;
+    private String date;
+    private int numPeople;
+
+    public Reservation(String name, String date, int numPeople) {
+        this.name = name;
+        this.date = date;
+        this.numPeople = numPeople;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public int getNumPeople() {
+        return numPeople;
+    }
+}
+
+class ReservationManager {
+    private List<Reservation> reservations;
+
+    public ReservationManager() {
+        this.reservations = new ArrayList<>();
+    }
+
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
+
+    public List<Reservation> getAllReservations() {
+        return reservations;
+    }
+
+    public List<Reservation> getReservationsByDate(String date) {
+        List<Reservation> result = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            if (reservation.getDate().equals(date)) {
+                result.add(reservation);
+            }
+        }
+        return result;
+    }
+}
+
+ class OnlineReservationSystem {
+    public static void main(String[] args) {
+        ReservationManager reservationManager = new ReservationManager();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of reservations:");
+        int numReservations = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numReservations; i++) {
+            System.out.println("Enter name for reservation " + (i + 1) + ":");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter date for reservation " + (i + 1) + " (YYYY-MM-DD):");
+            String date = scanner.nextLine();
+
+            System.out.println("Enter number of people for reservation " + (i + 1) + ":");
+            int numPeople = scanner.nextInt();
+            scanner.nextLine();
+
+            Reservation reservation = new Reservation(name, date, numPeople);
+            reservationManager.addReservation(reservation);
+        }
+
+        List<Reservation> allReservations = reservationManager.getAllReservations();
+        System.out.println("\nAll reservations:");
+        for (Reservation reservation : allReservations) {
+            System.out.println(reservation.getName() + " - " + reservation.getDate() + " - " + reservation.getNumPeople());
+        }
+
+        System.out.println("\nEnter date to get reservations for (YYYY-MM-DD):");
+        String date = scanner.nextLine();
+        List<Reservation> reservationsForDate = reservationManager.getReservationsByDate(date);
+        System.out.println("\nReservations for " + date + ":");
+        for (Reservation reservation : reservationsForDate) {
+            System.out.println(reservation.getName() + " - " + reservation.getNumPeople());
+        }
+
+        scanner.close();
+    }
+}
